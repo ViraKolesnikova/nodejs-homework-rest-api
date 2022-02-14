@@ -22,7 +22,16 @@ const getContactById = async (contactId) => {
   }
 };
 
-const removeContact = async (contactId) => {};
+const removeContact = async (contactId) => {
+  const contacts = await listContacts();
+  const contactToDelete = contacts.find(contact=>contact.id === contactId);
+  if(!contactToDelete){
+    return
+  }
+  const updatedContacts = contacts.filter(contact=> contact.id!== contactId);
+  await fs.writeFile(path.join(__dirname,'..','models', 'contacts.json'), JSON.stringify(updatedContacts));
+  return contactToDelete;
+};
 
 const addContact = async (body) => {
   try{
@@ -42,7 +51,24 @@ const addContact = async (body) => {
   }
 };
 
-const updateContact = async (contactId, body) => {};
+const updateContact = async (contactId, {name, email, phone}) => {
+  try{
+    const contacts = await listContacts();
+    let contactToUpdate = await getContactById(contactId);
+    contactToUpdate={
+      id: contactId,
+      name,
+      email,
+      phone
+    }
+    const updatedContactsList = contacts.map(contact =>  contact.id === contactId ? contactToUpdate : contact);
+    await fs.writeFile(path.join(__dirname,'..','models', 'contacts.json'), JSON.stringify(updatedContactsList));
+    
+    return contactToUpdate;    
+  }catch(error){
+    console.log(error);
+  }
+};
 
 module.exports = {
   listContacts,
