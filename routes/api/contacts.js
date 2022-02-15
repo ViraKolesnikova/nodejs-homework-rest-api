@@ -1,6 +1,6 @@
 const express = require("express");
 
-const Joi = require('joi');
+const validation = require('../../models/validation');
 
 const {
   listContacts,
@@ -11,6 +11,7 @@ const {
 } = require("../../models/contacts");
 
 const router = express.Router();
+
 
 router.get("/", async (req, res, next) => {
   const contacts = await listContacts();
@@ -23,6 +24,7 @@ router.get("/", async (req, res, next) => {
   }
   res.json({ status: "success", data: contacts });
 });
+
 
 router.get("/:contactId", async (req, res, next) => {
   const id = req.params.contactId;
@@ -37,24 +39,9 @@ router.get("/:contactId", async (req, res, next) => {
   res.json({ status: "success", data: contactById });
 });
 
-router.post("/", async (req, res, next) => {
-  const schema = Joi.object({
-    name: Joi.string()
-      .alphanum()
-      .min(3)
-      .max(30)
-      .required(),
-    email: Joi.string()
-      .email({ minDomainSegments: 2 })
-      .required(),
-    phone: Joi.string()
-      .pattern(/^[0-9 ]+$/, 'numbers')
-      .min(10)
-      .max(16)
-      .required()
-  })
 
-  const validationResult = schema.validate(req.body);
+router.post("/", async (req, res, next) => {
+  const validationResult = validation(req.body);
   if(validationResult.error){
     res.status(400).json({"message": validationResult.error.details});
     return
@@ -63,6 +50,7 @@ router.post("/", async (req, res, next) => {
  const newContact = await addContact(req.body);
   res.status(201).json({ status: "Created", data: newContact });
 });
+
 
 router.delete("/:contactId", async (req, res, next) => {
   const id = req.params.contactId;
@@ -88,23 +76,7 @@ router.put("/:contactId", async (req, res, next) => {
     return;
   }
 
-  const schema = Joi.object({
-    name: Joi.string()
-      .alphanum()
-      .min(3)
-      .max(30)
-      .required(),
-    email: Joi.string()
-      .email({ minDomainSegments: 2 })
-      .required(),
-    phone: Joi.string()
-      .pattern(/^[0-9 ]+$/, 'numbers')
-      .min(10)
-      .max(16)
-      .required()
-  })
-
-  const validationResult = schema.validate(req.body);
+  const validationResult = validation(req.body);
   if(validationResult.error){
     res.status(400).json({"message": validationResult.error.details});
     return
