@@ -1,5 +1,5 @@
-const validation = require('../../middlewares/validation/contactsValidation');
-const {updateContact} = require('../../models/contacts');
+const {contactValidation} = require('../../middlewares/validation/contactsValidation');
+const {Contact} = require('../../models');
 
 module.exports = async (req, res, next) => {
   const id = req.params.contactId;
@@ -9,11 +9,11 @@ module.exports = async (req, res, next) => {
     return;
   }
 
-  const validationResult = validation(req.body);
+  const validationResult = contactValidation(body);
   if(validationResult.error){
     res.status(400).json({"message": validationResult.error.details});
     return
   }
-  const updatedContact = await updateContact(id, body);
+  const updatedContact = await Contact.findByIdAndUpdate(id, body, {new:true});
   res.status(200).json({status: "success", data: updatedContact})
 }

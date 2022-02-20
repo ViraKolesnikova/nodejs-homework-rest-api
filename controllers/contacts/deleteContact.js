@@ -1,11 +1,11 @@
-const {removeContact} = require('../../models/contacts');
+const {Contact} = require('../../models');
 
 module.exports = async (req, res, next) => {
   const id = req.params.contactId;
   if(!id){
     return
   }
-  const contactById = await removeContact(id);
+  const contactById = await Contact.findByIdAndRemove(id);
   if (!contactById) {
     res.status(404).json({
       status: "Error 404",

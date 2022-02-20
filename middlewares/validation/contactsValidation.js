@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const validation = (data) => {
+const contactValidation = (data) => {
   const schema = Joi.object({
     name: Joi.string()
       .regex(/^[A-Z]+ [A-Z]+$/i)
@@ -18,4 +18,12 @@ const validation = (data) => {
   return schema.validate(data);
 };
 
-module.exports = validation;
+const favoriteValidation = (data) => {
+  const schema = Joi.object({
+    favorite: Joi.bool()   
+  });
+
+  return schema.validate(data);
+};
+
+module.exports = {contactValidation, favoriteValidation};

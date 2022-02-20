@@ -1,7 +1,7 @@
-const {listContacts} = require('../../models/contacts');
+const {Contact} = require('../../models');
 
 module.exports = async (req, res, next) => {
-  const contacts = await listContacts();
+  const contacts = await Contact.find({});
   if (!contacts) {
     res.status(400).json({
       status: "Error 400",
