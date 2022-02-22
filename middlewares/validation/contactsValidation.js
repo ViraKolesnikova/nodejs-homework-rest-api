@@ -13,6 +13,7 @@ const contactValidation = (data) => {
       .min(10)
       .max(16)
       .required(),
+    favorite: Joi.bool()
   });
 
   return schema.validate(data);

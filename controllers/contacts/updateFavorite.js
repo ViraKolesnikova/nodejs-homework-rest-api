@@ -2,8 +2,9 @@ const {Contact} = require('../../models');
 const {favoriteValidation} = require('../../middlewares/validation/contactsValidation');
 
 module.exports = async (req, res, next) => {
-  if(!req.body){
+  if(req.body.favorite === undefined){
     res.status(400).json({"message": "missing field favorite"});
+    return
   }
   const {favorite}= req.body;
   const id = req.params.contactId;
