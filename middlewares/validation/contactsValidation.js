@@ -21,7 +21,7 @@ const contactValidation = (data) => {
 
 const favoriteValidation = (data) => {
   const schema = Joi.object({
-    favorite: Joi.bool()   
+    favorite: Joi.bool()
   });
 
   return schema.validate(data);

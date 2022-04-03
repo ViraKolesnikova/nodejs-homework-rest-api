@@ -3,7 +3,7 @@ const express = require("express");
 const {
   getContacts,
   getContactById,
-  postContact,
+  createContact,
   deleteContact,
   putContact,
   updateFavorite
@@ -16,7 +16,7 @@ router.get("/", getContacts);
 
 router.get("/:contactId", getContactById);
 
-router.post("/", postContact);
+router.post("/", createContact);
 
 router.delete("/:contactId", deleteContact);
 
@@ -25,4 +25,3 @@ router.put("/:contactId", putContact);
 router.patch("/:contactId/favorite", updateFavorite);
 
 module.exports = router;
-
