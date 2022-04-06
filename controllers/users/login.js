@@ -2,7 +2,7 @@ const { BadRequest, Unauthorized } = require('http-errors');
 const jwt = require("jsonwebtoken");
 const bcrypt =  require('bcryptjs');
 const { User } = require('../../models');
-const { userValidation } = require('../../middlewares/validation')
+const { userValidation } = require('../../middlewares')
 
 const {SECRET_KEY} = process.env;
 

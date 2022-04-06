@@ -1,7 +1,7 @@
 const { BadRequest, Conflict } = require('http-errors');
 const bcrypt = require('bcryptjs');
 const { User } = require('../../models');
-const { userValidation } = require('../../middlewares/validation')
+const { userValidation } = require('../../middlewares')
 
 module.exports = async (req, res) => {
   const validationResult = userValidation(req.body);

@@ -1,6 +1,7 @@
 const Joi = require("joi");
 
 const contactValidation = (data) => {
+  console.log(data);
   const schema = Joi.object({
     name: Joi.string()
       .regex(/^[A-Z]+ [A-Z]+$/i)
