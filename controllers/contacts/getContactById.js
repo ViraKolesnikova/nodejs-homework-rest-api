@@ -1,14 +1,15 @@
+const { NotFound } = require('http-errors');
+
 const {Contact} = require('../../models')
 
 module.exports = async (req, res, next) => {
+  const ownerId = req.user._id;
   const id = req.params.contactId;
-  const contactById = await Contact.findById(id);
+  const contactById = await Contact.findOne({_id: id, owner: ownerId});
+
   if (!contactById) {
-    res.status(404).json({
-      status: "Error 404",
-      message: `Contact with id ${id} is not found`,
-    });
-    return
+    throw new NotFound(`Contact with id ${id} is not found`)
   }
+
   res.json({ status: "success", data: contactById });
 }

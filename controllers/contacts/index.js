@@ -1,6 +1,6 @@
 const getContacts = require("./getContacts");
 const getContactById = require("./getContactById");
-const postContact = require("./postContact");
+const createContact = require("./createContact");
 const deleteContact = require("./deleteContact");
 const putContact = require("./putContact");
 const updateFavorite = require("./updateFavorite");
@@ -8,7 +8,7 @@ const updateFavorite = require("./updateFavorite");
 module.exports = {
   getContacts,
   getContactById,
-  postContact,
+  createContact,
   deleteContact,
   putContact,
   updateFavorite
