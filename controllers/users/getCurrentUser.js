@@ -13,7 +13,8 @@ const user = await User.findById(_id);
  res.status(200).json({
    user: {
      email: user.email,
-     subscription: user.subscription
+     subscription: user.subscription,
+     avatar: user.avatarURL
    }
  })
 }

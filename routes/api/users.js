@@ -1,17 +1,43 @@
 const express = require("express");
+const multer = require("multer");
+const path = require('path');
 const router = express.Router();
 
-const { users } = require('../../controllers');
-const { wrapper, authMiddleware } = require('../../middlewares');
+const uploadDir = path.join(__dirname, '..', '..','tmp');
 
-router.post('/register', wrapper(users.register));
+const multerConfig = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now());
+  },
+  limits: {
+    fileSize: 50000,
+  },
+});
 
-router.post('/login', wrapper(users.login));
+const upload = multer({ storage: multerConfig });
 
-router.get('/logout', authMiddleware, wrapper(users.logout));
+const { users } = require("../../controllers");
+const { wrapper, authMiddleware } = require("../../middlewares");
 
-router.get('/current', authMiddleware, wrapper(users.getCurrentUser));
+// Register new user
+router.post("/register", wrapper(users.register));
 
-router.patch('/', authMiddleware, wrapper(users.updateSubscription))
+// Login user
+router.post("/login", wrapper(users.login));
+
+// Logout user
+router.get("/logout", authMiddleware, wrapper(users.logout));
+
+// Get information about current user
+router.get("/current", authMiddleware, wrapper(users.getCurrentUser));
+
+// Upgrade user's subscription
+router.patch("/", authMiddleware, wrapper(users.updateSubscription));
+
+// Update user's avatar
+router.patch("/avatars", authMiddleware, upload.single('avatar'), wrapper(users.updateAvatar));
 
 module.exports = router;
