@@ -8,6 +8,7 @@ const { User } = require("../../models");
 module.exports = async (req, res) => {
   const { _id } = req.user;
   const { path: tempUpload, originalname } = req.file;
+
   const avatarName = `${_id}-${originalname}`;
   const resultUpload = path.join("public", "avatars", avatarName);
 
