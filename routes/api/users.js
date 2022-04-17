@@ -1,8 +1,10 @@
 const express = require("express");
+const fs = require("fs/promises");
 const multer = require("multer");
 const path = require('path');
 const router = express.Router();
 
+fs.mkdir(path.join(__dirname, '..', '..', 'tmp'), { recursive: true });
 const uploadDir = path.join(__dirname, '..', '..','tmp');
 
 const multerConfig = multer.diskStorage({
