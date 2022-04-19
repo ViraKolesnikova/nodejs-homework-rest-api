@@ -10,12 +10,12 @@ module.exports = async (req, res) => {
     throw new BadRequest("Bad request");
   }
 
-  const updetedSubscription = await User.findOneAndUpdate({_id}, {subscription}, {new: true});
+  const updatedSubscription = await User.findOneAndUpdate({_id}, {subscription}, {new: true});
   res.status(200).json({
     status: "Success",
     user : {
       email: req.user.email,
-      subscription: updetedSubscription.subscription,
+      subscription: updatedSubscription.subscription,
     }
   })
 }

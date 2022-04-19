@@ -4,7 +4,7 @@ const bcrypt =  require('bcryptjs');
 const { User } = require('../../models');
 const { userValidation } = require('../../middlewares')
 
-const {SECRET_KEY} = process.env;
+const { SECRET_KEY } = process.env;
 
 module.exports = async (req, res) => {
   const { email, password } = req.body;
@@ -28,6 +28,7 @@ module.exports = async (req, res) => {
   const payload = {
     id: user._id
   }
+
   const token = jwt.sign(payload, SECRET_KEY, {expiresIn: "2h"});
   await User.findByIdAndUpdate(user._id, {token});
 
