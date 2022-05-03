@@ -27,6 +27,12 @@ const { wrapper, authMiddleware } = require("../../middlewares");
 // Register new user
 router.post("/register", wrapper(users.register));
 
+// Verify user's email
+router.get('/verify/:verificationToken', wrapper(users.emailVerification));
+
+// Resend verification link to user's email
+router.post('/verify', wrapper(users.resendVerification));
+
 // Login user
 router.post("/login", wrapper(users.login));
 

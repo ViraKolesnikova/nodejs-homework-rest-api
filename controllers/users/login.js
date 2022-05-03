@@ -1,4 +1,4 @@
-const { BadRequest, Unauthorized } = require('http-errors');
+const { BadRequest, Unauthorized, ServiceUnavailable } = require('http-errors');
 const jwt = require("jsonwebtoken");
 const bcrypt =  require('bcryptjs');
 const { User } = require('../../models');
@@ -8,15 +8,21 @@ const { SECRET_KEY } = process.env;
 
 module.exports = async (req, res) => {
   const { email, password } = req.body;
+
+  const validationResult = userValidation(req.body);
+
+  if(validationResult.error) {
+    throw new BadRequest(validationResult.error.details);
+  }
+
   const user = await User.findOne({email});
 
   if (!user) {
     throw new Unauthorized("Email or password is wrong")
   }
-  const validationResult = userValidation(req.body);
 
-  if(validationResult.error) {
-    throw new BadRequest(validationResult.error.details);
+  if (!user.verified) {
+    throw new ServiceUnavailable("Email is not verified.")
   }
 
   const passCompare = bcrypt.compareSync(password, user.password);
